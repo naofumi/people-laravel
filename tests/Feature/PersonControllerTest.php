@@ -39,7 +39,7 @@ class PersonControllerTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
         $person = Person::all()->last();
-        $response->assertRedirect(route('people.show', $person->id));
+        $response->assertRedirect(route('people.show', $person));
     }
 
     public function test_store_with_invalid_name()
@@ -78,10 +78,69 @@ class PersonControllerTest extends TestCase
     public function test_show()
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
-        $response = $this->get(route('people.show', $person->id));
+        $response = $this->get(route('people.show', $person));
 
         $response->assertStatus(200);
         $response->assertSee('Taro Yamada');
+    }
+
+    public function test_edit()
+    {
+        $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
+        $response = $this->get(route('people.edit', $person));
+
+        $response->assertStatus(200);
+        $response->assertSee('Taro Yamada');
+    }
+
+    public function test_update_with_valid_paramters()
+    {
+        $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
+
+        $response = $this->patch(route('people.update', $person), ['name' => 'New Name',
+                                                       'email' => 'new.email@example.com']);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('people', ['name' => 'New Name']);
+        $person = Person::all()->last();
+        $response->assertRedirect(route('people.show', $person));
+    }
+
+    public function test_update_with_blank_email()
+    {
+        $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
+
+        $response = $this->patch(route('people.update', $person), ['name' => 'New Name',
+                                                       'email' => '']);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
+        $this->assertDatabaseMissing('people', ['name' => 'New Name']);
+        $response->assertSessionHasErrors([
+            'email' => 'The email field is required.'
+        ]);
+    }
+
+    public function test_update_with_blank_name()
+    {
+        $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
+
+        $response = $this->patch(route('people.update', $person), ['name' => '',
+                                                       'email' => 'taro.yamada@example.com']);
+
+        $response->assertSessionHasErrors([
+            'name' => 'The name field is required.'
+        ]);
+    }
+
+    public function test_destroy()
+    {
+        $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
+
+        $response = $this->delete(route('people.destroy', $person));
+        $this->assertModelMissing($person);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('people.index'));
     }
 
 }

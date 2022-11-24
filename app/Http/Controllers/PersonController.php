@@ -65,7 +65,7 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        //
+        return view('people.edit', ['person' => $person]);
     }
 
     /**
@@ -77,7 +77,9 @@ class PersonController extends Controller
      */
     public function update(UpdatePersonRequest $request, Person $person)
     {
-        //
+        $person->update($request->validated());
+
+        return redirect(route('people.show', $person));
     }
 
     /**
@@ -88,6 +90,8 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        //
+        $person->delete();
+
+        return redirect(route('people.index'));
     }
 }

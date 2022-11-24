@@ -6,8 +6,8 @@
 <div class="d-flex justify-content-between">
     <h1>Show Person</h1>
     <div>
-        <a href="{{ route('people.index') }}" class="btn btn-primary">
-            List of People
+        <a href="{{ route('people.edit', $person) }}" class="btn btn-primary">
+            Edit Person
         </a>
     </div>
 </div>
