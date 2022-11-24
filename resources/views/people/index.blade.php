@@ -1,3 +1,9 @@
+@extends('layouts.application')
+@section('title', 'People')
+
+@section('content')
+
+<h1>People</h1>
 <div>
 	<table class="table">
 		<thead>
@@ -16,3 +22,4 @@
 		</tbody>
 	</table>
 </div>
+@endsection
