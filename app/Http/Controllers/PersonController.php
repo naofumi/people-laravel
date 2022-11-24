@@ -15,7 +15,10 @@ class PersonController extends Controller
      */
     public function index()
     {
-        //
+        $people = Person::orderBy('name', 'asc')->paginate(25);
+
+        return view('people.index', ['people' => $people]);
+
     }
 
     /**
