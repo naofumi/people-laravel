@@ -23,7 +23,7 @@
 			@foreach ($people as $person)
 				<tr id="person_{{ $person->id }}">
 					<td>
-						<a href="{{ route('people.show') }}">
+						<a href="{{ route('people.show', $person->id) }}">
 							{{ $person->name }}
 						</a>
 					</td>

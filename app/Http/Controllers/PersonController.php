@@ -28,7 +28,9 @@ class PersonController extends Controller
      */
     public function create()
     {
-        //
+        $person = new Person();
+
+        return view('people.create', ['person' => $person]);
     }
 
     /**
@@ -39,7 +41,9 @@ class PersonController extends Controller
      */
     public function store(StorePersonRequest $request)
     {
-        //
+        $person = Person::create($request->validated());
+
+        return redirect(route('people.show', $person->id));
     }
 
     /**
@@ -50,7 +54,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        //
+        return view('people.show', ['person' => $person]);
     }
 
     /**
