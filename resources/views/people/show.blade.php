@@ -29,6 +29,7 @@
             <tr>
                 <th>By</th>
                 <th>Content</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,12 @@
                     </td>
                     <td>
                         <x-markdown>{{ $note->content }}</x-markdown>
+                    </td>
+                    <td>
+                        <a href="{{ route('notes.edit', $note->id) }}"
+                           class="btn btn-sm btn-outline-secondary">
+                            Edit
+                        </a>
                     </td>
                 </tr>
             @endforeach
