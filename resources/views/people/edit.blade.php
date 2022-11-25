@@ -32,7 +32,7 @@
 </form>
 <div class="d-flex justify-content-between">
 	<div></div>
-	<form action="{{ route('people.destroy', $person) }}" method="post">
+	<form action="{{ route('people.destroy', $person) }}" method="post" data-turbo-confirm="Hello">
 		@csrf
 		@method('DELETE')
 		<button type="submit" class="btn btn-danger">Delete Person</button>
