@@ -101,6 +101,9 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+        $note->delete();
+
+        return redirect(to: route('people.show', $note->notable))
+                ->withSuccess('Note was successfully deleted.');
     }
 }

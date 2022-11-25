@@ -112,4 +112,20 @@ class NoteControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Some Note content');
     }
+
+    public function test_destroy()
+    {
+        $note = Note::factory()
+                    ->for(User::factory(), 'noter')
+                    ->for(Person::factory(), 'notable')
+                    ->create([
+                        'content' => 'Some Note content'
+                    ]);
+
+        $response = $this->delete(route('notes.destroy', $note));
+        $this->assertModelMissing($note);
+        $response->assertRedirect(route('people.show', $note->notable))
+            ->assertSessionHas('success', 'Note was successfully deleted.');
+    }
+
 }
