@@ -10,4 +10,9 @@ class Person extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'email'];
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'commentable');
+    }
 }
