@@ -38,7 +38,7 @@
                         {{ $note->noter->name }}
                     </td>
                     <td>
-                        {{ $note->content }}
+                        <x-markdown>{{ $note->content }}</x-markdown>
                     </td>
                 </tr>
             @endforeach
