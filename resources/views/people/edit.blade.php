@@ -7,7 +7,7 @@
 	<div>
 		<a href="{{ route('people.show', $person) }}"
 		   class="btn btn-outline-secondary">
-			Show Person
+			Back
 		</a>
 	</div>
 	<h1>Edit Person</h1>
