@@ -59,4 +59,42 @@ class NoteControllerTest extends TestCase
         ]);
     }
 
+    public function test_edit()
+    {
+        $noter = User::factory()->create();
+        $person = Person::factory()->create();
+        $note = Note::factory()->create([
+            'content' => 'Some Note content',
+            'notable_id' => $person->id,
+            'notable_type' => get_class($person),
+            'noter_id' => $noter->id,
+            'noter_type' => get_class($noter)
+        ]);
+
+        $response = $this->get(route('notes.edit', $note));
+
+        $response->assertStatus(200);
+        $response->assertSee('Some Note content');
+    }
+
+    public function test_update()
+    {
+        $noter = User::factory()->create();
+        $person = Person::factory()->create();
+        $note = Note::factory()->create([
+            'content' => 'Some Note content',
+            'notable_id' => $person->id,
+            'notable_type' => get_class($person),
+            'noter_id' => $noter->id,
+            'noter_type' => get_class($noter)
+        ]);
+
+        $response = $this->patch(route('notes.update', $note), [
+            'content' => 'Update Note content',
+        ]);
+
+        $this->assertDatabaseHas('notes', ['content' => 'Update Note content']);
+        $response->assertRedirect(route('notes.show', $note->id))
+                 ->assertSessionHas('success', 'Note was successfully updated.');
+    }
 }

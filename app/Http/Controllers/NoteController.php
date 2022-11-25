@@ -75,7 +75,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        //
+        return view('notes.edit', ['note' => $note]);
     }
 
     /**
@@ -87,7 +87,10 @@ class NoteController extends Controller
      */
     public function update(UpdateNoteRequest $request, Note $note)
     {
-        //
+        $note->update($request->validated());
+
+        return redirect(route('notes.show', $note))
+                 ->withSuccess('Note was successfully updated.');
     }
 
     /**

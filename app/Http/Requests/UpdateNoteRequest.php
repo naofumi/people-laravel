@@ -13,7 +13,8 @@ class UpdateNoteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,7 @@ class UpdateNoteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content' => 'required|string'
         ];
     }
 }
