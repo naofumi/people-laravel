@@ -44,5 +44,8 @@
             @endforeach
         </tbody>
     </table>
+    <a href="{{ route('notes.create') }}" class="btn btn-primary">
+        Create note
+    </a>
 </div>
 @endsection
