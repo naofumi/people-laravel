@@ -44,6 +44,7 @@ class PersonControllerTest extends TestCase
         $response->assertRedirect(route('people.show', $person));
     }
 
+    // https://tutsforweb.com/testing-file-uploads-with-laravel/
     public function test_store_with_file_upload()
     {
         Storage::fake('public');
