@@ -97,4 +97,23 @@ class NoteControllerTest extends TestCase
         $response->assertRedirect(route('notes.show', $note->id))
                  ->assertSessionHas('success', 'Note was successfully updated.');
     }
+
+    public function test_show()
+    {
+        $noter = User::factory()->create();
+        $person = Person::factory()->create();
+        $note = Note::factory()->create([
+            'content' => 'Some Note content',
+            'notable_id' => $person->id,
+            'notable_type' => get_class($person),
+            'noter_id' => $noter->id,
+            'noter_type' => get_class($noter)
+        ]);
+
+        $response = $this->get(route('notes.show', $note));
+
+        $response->assertStatus(200);
+        $response->assertSee('Some Note content');
+    }
+
 }
