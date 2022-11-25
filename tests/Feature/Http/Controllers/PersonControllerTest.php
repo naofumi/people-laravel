@@ -4,6 +4,8 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 
@@ -39,6 +41,20 @@ class PersonControllerTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
         $person = Person::all()->last();
+        $response->assertRedirect(route('people.show', $person));
+    }
+
+    public function test_store_with_file_upload()
+    {
+        Storage::fake('public');
+        $file = UploadedFile::fake()->image('test_image.jpg');
+        $response = $this->post(route('people.store'), ['name' => 'Taro Yamada',
+                                                       'email' => 'taro.yamada@example.com',
+                                                        'avatar' => $file]);
+
+        $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
+        $person = Person::all()->last();
+        Storage::disk('public')->assertExists($person->avatar_path);
         $response->assertRedirect(route('people.show', $person));
     }
 

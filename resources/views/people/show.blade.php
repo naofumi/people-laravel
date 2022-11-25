@@ -62,4 +62,8 @@
         Create note
     </a>
 </div>
+
+@if ($person->avatar_path)
+    <img src="{{ Storage::url($person->avatar_path) }}">
+@endif
 @endsection

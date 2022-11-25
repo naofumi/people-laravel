@@ -11,7 +11,7 @@
 		</a>
 	</div>
 </div>
-<form action="{{ route('people.store') }}" method="post">
+<form action="{{ route('people.store') }}" method="post" enctype="multipart/form-data">
 	@csrf
 	<div>
 		<label for="name">Name</label>
@@ -24,6 +24,11 @@
 		<input type="text"
 			   name="email"
 			   value={{ old('email') }}>
+	</div>
+	<div>
+		<label for="avatar">Avatar</label>
+		<input type="file"
+			   name="avatar">
 	</div>
 	<div>
 	    <input type="submit" value="Create Person" class="btn btn-primary">

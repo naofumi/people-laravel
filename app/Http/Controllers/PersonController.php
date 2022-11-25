@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\Uploadable;
 use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
 use App\Models\Person;
 
 class PersonController extends Controller
 {
+    use Uploadable;
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +43,14 @@ class PersonController extends Controller
      */
     public function store(StorePersonRequest $request)
     {
-        $person = Person::create($request->validated());
+        if ($request->hasFile('avatar')) {
+            $path = $this->uploadFile($request->file('avatar'));
+        } else {
+            $path = null;
+        }
+
+        $person = Person::create(array_merge($request->validated(),
+                                             ['avatar_path' => $path]));
 
         return redirect(route('people.show', $person->id));
     }

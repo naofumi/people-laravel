@@ -33,5 +33,5 @@
 		</tbody>
 	</table>
 </div>
-<img src="{{ Vite::asset('resources/images/image.jpg') }}" />
+{{-- <img src="{{ Vite::asset('resources/images/image.jpg') }}" /> --}}
 @endsection
