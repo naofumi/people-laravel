@@ -22,4 +22,27 @@
         {{ $person->email }}
     </p>
 </div>
+<div id="notes">
+    <h2>Notes</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>By</th>
+                <th>Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($person->notes as $note)
+                <tr id="note_{{ $note->id }}">
+                    <td>
+                        {{ $note->commenter->name }}
+                    </td>
+                    <td>
+                        {{ $note->content }}
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection
