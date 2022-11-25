@@ -12,7 +12,7 @@ class NoteTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_commenter_and_commentable_association_via_field_entry()
+    public function test_commenter_and_commentable_relation_settable_via_field_entry()
     {
         $user = User::factory()->create();
 
