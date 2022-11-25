@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNoteRequest;
 use App\Http\Requests\UpdateNoteRequest;
+use Illuminate\Http\Request;
 use App\Models\Note;
 
 class NoteController extends Controller
@@ -23,9 +24,16 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $commentable = Note::commentableFindSafe(
+            commentableId: $request->query('commentable_id'),
+            commentableType: $request->query('commentable_type')
+        );
+
+        $note = new Note();
+
+        return view('notes.create', ['note' => $note, 'commentable' => $commentable]);
     }
 
     /**

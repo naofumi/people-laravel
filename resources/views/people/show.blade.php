@@ -44,7 +44,10 @@
             @endforeach
         </tbody>
     </table>
-    <a href="{{ route('notes.create') }}" class="btn btn-primary">
+    <a href="{{ route('notes.create',
+                      ['commentable_id' => $person->id,
+                      'commentable_type' => get_class($person) ]) }}"
+       class="btn btn-primary">
         Create note
     </a>
 </div>
