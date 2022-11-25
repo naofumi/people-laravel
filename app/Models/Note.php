@@ -17,6 +17,10 @@ class Note extends Model
         'commentable_type',
     ];
 
+    protected static $allowedCommentableClasses = [
+        'App\Models\Person'
+    ];
+
     public function commenter()
     {
         return $this->morphTo();
@@ -27,4 +31,18 @@ class Note extends Model
         return $this->morphTo();
     }
 
+    // Finds the commentable object.
+    // For security reasons, only the $commentableTypes that have been whitelisted
+    // in $allowedCommentableClasses are allowed.
+    //
+    // If either the $commentableType is not allowed, or the $commetableId does not
+    // exist in the DB, `null` is returned.
+    public static function commentableFindSafe($commentableType, $commentableId)
+    {
+        if (array_search($commentableType, Note::$allowedCommentableClasses) === false) {
+            return null;
+        } else {
+            return $commentableType::find($commentableId);
+        }
+    }
 }
