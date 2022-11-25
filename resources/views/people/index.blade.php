@@ -5,6 +5,10 @@
 
 <div class="d-flex justify-content-between">
 	<div>
+		<a href="#"
+		   class="btn btn-outline-secondary">
+			Teams
+		</a>
 	</div>
 	<h1>People</h1>
 	<div>
