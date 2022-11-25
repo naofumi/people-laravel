@@ -11,7 +11,7 @@
 		</a>
 	</div>
 </div>
-<form action="{{ route('people.edit', $person) }}" method="post">
+<form action="{{ route('people.update', $person) }}" method="post">
 	@csrf
 	@method('PATCH')
 	<div>
