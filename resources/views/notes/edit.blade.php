@@ -6,7 +6,8 @@
 <div class="d-flex justify-content-between">
 	<h1>Edit Note</h1>
 	<div>
-		<a href="{{ route('notes.show', $note) }}" class="btn btn-primary">
+		<a href="{{ route('notes.show', $note) }}"
+		   class="btn btn-outline-secondary">
 			Show Note
 		</a>
 	</div>

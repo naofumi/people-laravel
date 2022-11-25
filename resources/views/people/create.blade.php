@@ -4,14 +4,25 @@
 @section('content')
 
 <div class="d-flex justify-content-between">
-	<h1>Create Person</h1>
 	<div>
-		<a href="{{ route('people.index') }}" class="btn btn-primary">
+		<a href="{{ route('people.index') }}"
+		   class="btn btn-outline-secondary">
 			List of People
 		</a>
 	</div>
+	<h1>Create Person</h1>
+	<div>
+	    <button type="submit"
+	    		form="new_person"
+	    		value="Submit"
+	    		class="btn btn-warning">Create Person</button>
+
+	</div>
 </div>
-<form action="{{ route('people.store') }}" method="post" enctype="multipart/form-data">
+<form id="new_person"
+	  action="{{ route('people.store') }}"
+      method="post"
+      enctype="multipart/form-data">
 	@csrf
 	<div>
 		<label for="name">Name</label>
@@ -29,9 +40,6 @@
 		<label for="avatar">Avatar</label>
 		<input type="file"
 			   name="avatar">
-	</div>
-	<div>
-	    <input type="submit" value="Create Person" class="btn btn-primary">
 	</div>
 </form>
 @endsection

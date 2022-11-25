@@ -4,16 +4,27 @@
 @section('content')
 
 <div class="d-flex justify-content-between">
-	<h1>Create Note</h1>
 	<div>
-		<a href="{{ route('notes.index') }}" class="btn btn-primary">
+		<a href="{{ route('notes.index') }}"
+		   class="btn btn-outline-secondary">
 			List of Notes
 		</a>
+	</div>
+	<h1>Create Note</h1>
+	<div>
+		<button form="new_note"
+				type="submit"
+				value="Create Note"
+				class="btn btn-primary">
+			Create Note
+		</button>
 	</div>
 </div>
 @include('shared.errors')
 
-<form action="{{ route('notes.store') }}" method="post">
+<form id="new_note"
+      action="{{ route('notes.store') }}"
+	  method="post">
 	@csrf
 	<input type="hidden"
 		   name="notable_id"
@@ -26,7 +37,6 @@
 		<textarea name="content">{{ old('content') }}</textarea>
 	</div>
 	<div>
-	    <input type="submit" value="Create Note" class="btn btn-primary">
 	</div>
 </form>
 @endsection

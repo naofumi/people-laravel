@@ -4,14 +4,25 @@
 @section('content')
 
 <div class="d-flex justify-content-between">
-	<h1>Edit Person</h1>
 	<div>
-		<a href="{{ route('people.show', $person) }}" class="btn btn-primary">
+		<a href="{{ route('people.show', $person) }}"
+		   class="btn btn-outline-secondary">
 			Show Person
 		</a>
 	</div>
+	<h1>Edit Person</h1>
+	<div>
+		<button form="person"
+				type="submit"
+				value="Update Person"
+				class="btn btn-warning">
+			Update Person
+		</button>
+	</div>
 </div>
-<form action="{{ route('people.update', $person) }}" method="post">
+<form id="person"
+	  action="{{ route('people.update', $person) }}"
+	  method="post">
 	@csrf
 	@method('PATCH')
 	<div>
@@ -26,11 +37,8 @@
 			   name="email"
 			   value={{ old('email', $person->email) }}>
 	</div>
-	<div class="mt-3">
-	    <input type="submit" value="Update Person" class="btn btn-primary">
-	</div>
 </form>
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mt-5">
 	<div></div>
 	<form action="{{ route('people.destroy', $person) }}" method="post" data-turbo-confirm="Are you sure you want to delete this person">
 		@csrf

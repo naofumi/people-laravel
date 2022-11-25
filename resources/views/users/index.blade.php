@@ -6,7 +6,8 @@
 <div class="d-flex justify-content-between">
     <h1>Users</h1>
     <div>
-        <a href="{{ route('users.create') }}" class="btn btn-primary">
+        <a href="{{ route('users.create') }}"
+           class="btn btn-outline-secondary">
             New User
         </a>
     </div>
