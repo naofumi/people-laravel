@@ -10,8 +10,8 @@
 	</head>
 	<body>
 		@include('shared.navbar')
-		@include('shared.flash')
-		<div class="container">
+		<div class="container mt-3">
+			@include('shared.flash')
 			@yield('content')
 		</div>
 	</body>
