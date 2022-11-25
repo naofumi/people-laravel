@@ -14,7 +14,7 @@
 <div>
     <p>
         <strong>Created by:</strong>
-        {{ $note->noter->name }}
+        <a href="{{ route('people.show', $note->notable) }}">{{ $note->noter->name }}</a>
     </p>
 
     <p>
