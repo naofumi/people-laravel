@@ -27,6 +27,7 @@ class NoteControllerTest extends TestCase
 
     public function test_store_with_valid_paramters()
     {
+        // TODO: Fix when Auth is implemented
         $user = User::factory()->create();
         $person = Person::factory()->create();
 
@@ -43,6 +44,7 @@ class NoteControllerTest extends TestCase
 
     public function test_store_with_invalid_paramters()
     {
+        // TODO: Fix when Auth is implemented
         $user = User::factory()->create();
         $person = Person::factory()->create();
 
@@ -63,13 +65,12 @@ class NoteControllerTest extends TestCase
     {
         $noter = User::factory()->create();
         $person = Person::factory()->create();
-        $note = Note::factory()->create([
-            'content' => 'Some Note content',
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person),
-            'noter_id' => $noter->id,
-            'noter_type' => get_class($noter)
-        ]);
+        $note = Note::factory()
+            ->for(User::factory(), 'noter')
+            ->for(Person::factory(), 'notable')
+            ->create([
+                'content' => 'Some Note content',
+            ]);
 
         $response = $this->get(route('notes.edit', $note));
 
@@ -81,13 +82,12 @@ class NoteControllerTest extends TestCase
     {
         $noter = User::factory()->create();
         $person = Person::factory()->create();
-        $note = Note::factory()->create([
-            'content' => 'Some Note content',
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person),
-            'noter_id' => $noter->id,
-            'noter_type' => get_class($noter)
-        ]);
+        $note = Note::factory()
+                ->for(User::factory(), 'noter')
+                ->for(Person::factory(), 'notable')
+                ->create([
+                    'content' => 'Some Note content',
+                ]);
 
         $response = $this->patch(route('notes.update', $note), [
             'content' => 'Update Note content',
@@ -100,20 +100,16 @@ class NoteControllerTest extends TestCase
 
     public function test_show()
     {
-        $noter = User::factory()->create();
-        $person = Person::factory()->create();
-        $note = Note::factory()->create([
-            'content' => 'Some Note content',
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person),
-            'noter_id' => $noter->id,
-            'noter_type' => get_class($noter)
-        ]);
+        $note = Note::factory()
+                    ->for(User::factory(), 'noter')
+                    ->for(Person::factory(), 'notable')
+                    ->create([
+                        'content' => 'Some Note content'
+                    ]);
 
         $response = $this->get(route('notes.show', $note));
 
         $response->assertStatus(200);
         $response->assertSee('Some Note content');
     }
-
 }
