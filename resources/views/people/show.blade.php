@@ -28,6 +28,7 @@
         <thead>
             <tr>
                 <th>By</th>
+                <th>At</th>
                 <th>Content</th>
                 <th></th>
             </tr>
@@ -37,6 +38,9 @@
                 <tr id="note_{{ $note->id }}">
                     <td>
                         {{ $note->noter->name }}
+                    </td>
+                    <td>
+                        {{ $note->created_at->toDateTimeString() }}
                     </td>
                     <td>
                         <x-markdown>{{ $note->content }}</x-markdown>
