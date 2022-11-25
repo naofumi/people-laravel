@@ -12,7 +12,7 @@ class NoteTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_commenter_and_commentable_relation_settable_via_field_entry()
+    public function test_noter_and_notable_relation_settable_via_field_entry()
     {
         $user = User::factory()->create();
 
@@ -20,50 +20,50 @@ class NoteTest extends TestCase
 
         $note = Note::factory()->create([
             'content' => 'Some Note content',
-            'commenter_id' => $user->id,
-            'commenter_type' => 'App\Models\User',
-            'commentable_id' => $person->id,
-            'commentable_type' => 'App\Models\Person',
+            'noter_id' => $user->id,
+            'noter_type' => 'App\Models\User',
+            'notable_id' => $person->id,
+            'notable_type' => 'App\Models\Person',
         ]);
 
-        $this->assertEquals($user->name, $note->commenter->name);
-        $this->assertEquals($person->name, $note->commentable->name);
+        $this->assertEquals($user->name, $note->noter->name);
+        $this->assertEquals($person->name, $note->notable->name);
     }
 
-    public function test_commentableFindSafe_success()
+    public function test_notableFindSafe_success()
     {
         $person = Person::factory()->create(['id' => 9999]);
 
-        $commentable = Note::commentableFindSafe(
-            commentableType: 'App\Models\Person',
-            commentableId: 9999
+        $notable = Note::notableFindSafe(
+            notableType: 'App\Models\Person',
+            notableId: 9999
         );
 
-        $this->assertEquals($person->name, $commentable->name);
+        $this->assertEquals($person->name, $notable->name);
     }
 
-    public function test_commentableFindSafe_fail_with_unallowed_type()
+    public function test_notableFindSafe_fail_with_unallowed_type()
     {
         $person = Person::factory()->create(['id' => 9999]);
 
-        $commentable = Note::commentableFindSafe(
-            commentableType: 'App\Models\User',
-            commentableId: 9999
+        $notable = Note::notableFindSafe(
+            notableType: 'App\Models\User',
+            notableId: 9999
         );
 
-        $this->assertNull($commentable);
+        $this->assertNull($notable);
     }
 
-    public function test_commentableFindSafe_fail_with_missing_id()
+    public function test_notableFindSafe_fail_with_missing_id()
     {
         $person = Person::factory()->create(['id' => 9999]);
 
-        $commentable = Note::commentableFindSafe(
-            commentableType: 'App\Models\Person',
-            commentableId: 1111
+        $notable = Note::notableFindSafe(
+            notableType: 'App\Models\Person',
+            notableId: 1111
         );
 
-        $this->assertNull($commentable);
+        $this->assertNull($notable);
     }
 
 }

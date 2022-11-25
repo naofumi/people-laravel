@@ -13,6 +13,6 @@ class Person extends Model
 
     public function notes()
     {
-        return $this->morphMany(Note::class, 'commentable');
+        return $this->morphMany(Note::class, 'notable');
     }
 }

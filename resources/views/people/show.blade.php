@@ -35,7 +35,7 @@
             @foreach ($person->notes as $note)
                 <tr id="note_{{ $note->id }}">
                     <td>
-                        {{ $note->commenter->name }}
+                        {{ $note->noter->name }}
                     </td>
                     <td>
                         {{ $note->content }}
@@ -45,8 +45,8 @@
         </tbody>
     </table>
     <a href="{{ route('notes.create',
-                      ['commentable_id' => $person->id,
-                      'commentable_type' => get_class($person) ]) }}"
+                      ['notable_id' => $person->id,
+                      'notable_type' => get_class($person) ]) }}"
        class="btn btn-primary">
         Create note
     </a>

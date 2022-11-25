@@ -21,10 +21,10 @@ class NoteSeeder extends Seeder
         $person = Person::firstWhere('name', 'Taro Yamada');
         Note::factory()->create([
             'content' => 'Sample Note Content',
-            'commenter_id' => $user->id,
-            'commenter_type' => get_class($user),
-            'commentable_id' => $person->id,
-            'commentable_type' => get_class($person)
+            'noter_id' => $user->id,
+            'noter_type' => get_class($user),
+            'notable_id' => $person->id,
+            'notable_type' => get_class($person)
         ]);
     }
 }

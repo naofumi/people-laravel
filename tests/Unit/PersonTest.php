@@ -20,10 +20,10 @@ class PersonTest extends TestCase
 
         $note = Note::factory()->create([
             'content' => 'Some Note content',
-            'commenter_id' => $user->id,
-            'commenter_type' => 'App\Models\User',
-            'commentable_id' => $person->id,
-            'commentable_type' => 'App\Models\Person',
+            'noter_id' => $user->id,
+            'noter_type' => 'App\Models\User',
+            'notable_id' => $person->id,
+            'notable_type' => 'App\Models\Person',
         ]);
 
         $this->assertEquals(

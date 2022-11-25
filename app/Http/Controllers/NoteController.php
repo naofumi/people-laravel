@@ -26,14 +26,14 @@ class NoteController extends Controller
      */
     public function create(Request $request)
     {
-        $commentable = Note::commentableFindSafe(
-            commentableId: $request->query('commentable_id'),
-            commentableType: $request->query('commentable_type')
+        $notable = Note::notableFindSafe(
+            notableId: $request->query('notable_id'),
+            notableType: $request->query('notable_type')
         );
 
         $note = new Note();
 
-        return view('notes.create', ['note' => $note, 'commentable' => $commentable]);
+        return view('notes.create', ['note' => $note, 'notable' => $notable]);
     }
 
     /**

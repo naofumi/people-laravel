@@ -11,38 +11,38 @@ class Note extends Model
 
     protected $fillable = [
         'content',
-        'commenter_id',
-        'commenter_type',
-        'commentable_id',
-        'commentable_type',
+        'noter_id',
+        'noter_type',
+        'notable_id',
+        'notable_type',
     ];
 
     protected static $allowedCommentableClasses = [
         'App\Models\Person'
     ];
 
-    public function commenter()
+    public function noter()
     {
         return $this->morphTo();
     }
 
-    public function commentable()
+    public function notable()
     {
         return $this->morphTo();
     }
 
-    // Finds the commentable object.
-    // For security reasons, only the $commentableTypes that have been whitelisted
+    // Finds the notable object.
+    // For security reasons, only the $notableTypes that have been whitelisted
     // in $allowedCommentableClasses are allowed.
     //
-    // If either the $commentableType is not allowed, or the $commetableId does not
+    // If either the $notableType is not allowed, or the $commetableId does not
     // exist in the DB, `null` is returned.
-    public static function commentableFindSafe($commentableType, $commentableId)
+    public static function notableFindSafe($notableType, $notableId)
     {
-        if (array_search($commentableType, Note::$allowedCommentableClasses) === false) {
+        if (array_search($notableType, Note::$allowedCommentableClasses) === false) {
             return null;
         } else {
-            return $commentableType::find($commentableId);
+            return $notableType::find($notableId);
         }
     }
 }
