@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\Uploadable;
 use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
 use App\Models\Person;
+use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {
@@ -15,9 +16,12 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $people = Person::orderBy('name', 'asc')->paginate(25);
+
+        $people = Person::search($request->query('search'))
+                                         ->orderBy('name', 'asc')
+                                         ->paginate(25);
 
         return view('people.index', ['people' => $people]);
 

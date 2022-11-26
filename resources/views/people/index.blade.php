@@ -18,31 +18,46 @@
 		</a>
 	</div>
 </div>
-<div id="people">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Email</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach ($people as $person)
-				<tr id="person_{{ $person->id }}">
-					<td>
-						{{ $person->name }}
-					</td>
-					<td>{{ $person->email }}</td>
-					<td>
-						<a href="{{ route('people.show', $person->id) }}"
-						   class="btn btn-outline-secondary btn-sm">
-							show
-						</a>					</td>
+<div data-controller="people-search">
+	<div id="drill-down">
+		<form action="{{ route('people.index') }}"
+		      method="get">
+		      <input id="searchbox"
+		      		 type="text"
+		      		 name="search"
+		      		 placeholder="Search"
+		      		 value="{{ request()->query('search') }}"
+		      		 data-action="input->people-search#input">
+		      <button type="submit">Search</button>
+		</form>
+	</div>
+	<turbo-frame id="people_table" target="_top" data-people-search-target="turboframe">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th></th>
 				</tr>
-			@endforeach
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach ($people as $person)
+					<tr id="person_{{ $person->id }}">
+						<td>
+							{{ $person->name }}
+						</td>
+						<td>{{ $person->email }}</td>
+						<td>
+							<a href="{{ route('people.show', $person->id) }}"
+							   class="btn btn-outline-secondary btn-sm">
+								show
+							</a>					</td>
+					</tr>
+				@endforeach
+			</tbody>
+		</table>
+	</turbo-frame>
 </div>
+
 {{-- <img src="{{ Vite::asset('resources/images/image.jpg') }}" /> --}}
 @endsection

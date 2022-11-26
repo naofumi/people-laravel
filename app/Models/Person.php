@@ -15,4 +15,15 @@ class Person extends Model
     {
         return $this->morphMany(Note::class, 'notable');
     }
+
+    public function scopeSearch($query, $searchString)
+    {
+        if ($searchString){
+
+            return $query->where('name', 'LIKE',"%{$searchString}%")
+                         ->orWhere('email', 'LIKE',"%{$searchString}%");
+        } else {
+            return $query;
+        }
+    }
 }

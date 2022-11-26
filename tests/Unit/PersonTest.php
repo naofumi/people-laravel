@@ -31,4 +31,26 @@ class PersonTest extends TestCase
             $person->notes->first()->content
         );
     }
+
+    public function test_search_scope()
+    {
+        $user1 = Person::factory()->create(['name' => 'Taro Yamada']);
+        $user2 = Person::factory()->create(['name' => 'Hanako Sato']);
+
+        $search1 = Person::search('Taro')->get();
+        $this->assertCount(1, $search1);
+        $this->assertEquals('Taro Yamada', $search1[0]->name);
+
+        // type insensitive
+        $search2 = Person::search('taro')->get();
+        $this->assertCount(1, $search2);
+        $this->assertEquals('Taro Yamada', $search2[0]->name);
+
+        $search3 = Person::search('a')->get();
+        $this->assertCount(2, $search3);
+
+        // blank query
+        $search4 = Person::search('')->get();
+        $this->assertCount(2, $search4);
+    }
 }
