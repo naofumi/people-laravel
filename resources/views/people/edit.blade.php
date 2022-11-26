@@ -20,6 +20,7 @@
 		</button>
 	</div>
 </div>
+@include('shared.errors')
 <form id="person"
 	  action="{{ route('people.update', $person) }}"
 	  method="post">

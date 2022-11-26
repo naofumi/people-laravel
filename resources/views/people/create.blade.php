@@ -19,6 +19,7 @@
 
 	</div>
 </div>
+@include('shared.errors')
 <form id="new_person"
 	  action="{{ route('people.store') }}"
       method="post"
