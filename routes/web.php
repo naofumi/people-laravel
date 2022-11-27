@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PersonController::class, 'index']);
+
+Route::resource('people', PersonController::class);
+Route::resource('users', UserController::class);
+Route::resource('notes', NoteController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
