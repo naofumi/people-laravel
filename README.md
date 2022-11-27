@@ -5,6 +5,8 @@
 We will use Bootstrap installed using [laravel/ui](https://github.com/laravel/ui).
 This has been installed according to the README in this package.
 
+We stripped out all Tailwind CSS stuff since we use Bootstrap in this project.
+
 ### Commands
 
 #### Development
@@ -36,3 +38,10 @@ create database people_seedtech_test;
   2. Seed data with `php artisan db:seed`
 2. Login user
   1. Login with email: "test@example.com", password: "password"
+
+## Static analysis
+
+```
+./vendor/bin/phpstan analyse --memory-limit=2G
+```
+
