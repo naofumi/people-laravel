@@ -22,13 +22,20 @@
 	<div id="drill-down">
 		<form action="{{ route('people.index') }}"
 		      method="get">
-		      <input id="searchbox"
-		      		 type="text"
-		      		 name="search"
-		      		 placeholder="Search"
-		      		 value="{{ request()->query('search') }}"
-		      		 data-action="input->people-search#input">
-		      <button type="submit">Search</button>
+	    <div class="d-flex justify-content-between">
+	       <div>
+			      <input id="searchbox"
+			      		 type="text"
+			      		 name="search"
+			      		 placeholder="Search"
+			      		 value="{{ request()->query('search') }}"
+			      		 data-action="input->people-search#input"
+			      		 class="form-control">
+			</div>
+			<div>
+			      <button type="submit" class="btn btn-primary">Search</button>
+			</div>
+		  </div>
 		</form>
 	</div>
 	<turbo-frame id="people_table" target="_top" data-people-search-target="turboframe">
