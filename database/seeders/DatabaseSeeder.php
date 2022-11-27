@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PersonSeeder::class,
             NoteSeeder::class,
+            TagSeeder::class,
+            TaggingSeeder::class,
         ]);
     }
 }
