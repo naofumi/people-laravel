@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use App\Models\Note;
 use App\Models\Person;
+use App\Models\Tag;
+use App\Models\Tagging;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -52,5 +54,40 @@ class PersonTest extends TestCase
         // blank query
         $search4 = Person::search('')->get();
         $this->assertCount(2, $search4);
+    }
+
+    public function test_taggings()
+    {
+        $person = Person::factory()->create(['name' => 'Mr Bean']);
+        $tag = Tag::factory()->create();
+
+        $tagging = Tagging::factory()->create([
+            'tag_id' => $tag->id,
+            'taggable_id' => $person->id,
+            'taggable_type' => get_class($person),
+            'memo' => 'Tagging Memo',
+        ]);
+
+        $this->assertContains(
+            'Tagging Memo',
+            $person->taggings->map(fn ($tg) => $tg->memo)
+        );
+    }
+
+    public function test_tags()
+    {
+        $person = Person::factory()->create(['name' => 'Mr Bean']);
+        $tag = Tag::factory()->create(['name' => 'Test Tag']);
+
+        $tagging = Tagging::factory()->create([
+            'tag_id' => $tag->id,
+            'taggable_id' => $person->id,
+            'taggable_type' => get_class($person),
+        ]);
+
+        $this->assertContains(
+            'Test Tag',
+            $person->tags->map(fn ($tg) => $tg->name)
+        );
     }
 }

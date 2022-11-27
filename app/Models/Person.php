@@ -13,7 +13,8 @@ class Person extends Model
 
     public function notes()
     {
-        return $this->morphMany(Note::class, 'notable');
+        return $this->morphMany(related: Note::class,
+            name: 'notable');
     }
 
     public function scopeSearch($query, $searchString)
@@ -24,5 +25,22 @@ class Person extends Model
         } else {
             return $query;
         }
+    }
+
+    public function taggings()
+    {
+        return $this->morphMany(
+            related: Tagging::class,
+            name: 'taggable'
+        );
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(
+            related: Tag::class,
+            name: 'taggable',
+            table: 'taggings'
+        );
     }
 }
