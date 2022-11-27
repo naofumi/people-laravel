@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class PersonController extends Controller
 {
     use Uploadable;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,13 +19,11 @@ class PersonController extends Controller
      */
     public function index(Request $request)
     {
-
         $people = Person::search($request->query('search'))
                                          ->orderBy('name', 'asc')
                                          ->paginate(25);
 
         return view('people.index', ['people' => $people]);
-
     }
 
     /**
@@ -54,7 +53,7 @@ class PersonController extends Controller
         }
 
         $person = Person::create(array_merge($request->validated(),
-                                             ['avatar_path' => $path]));
+            ['avatar_path' => $path]));
 
         return redirect(route('people.show', $person->id));
     }

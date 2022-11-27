@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Person;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 
 class PersonSeeder extends Seeder
 {
@@ -18,7 +16,7 @@ class PersonSeeder extends Seeder
     {
         Person::factory()->create([
             'name' => 'Taro Yamada',
-            'email' => 'taro.yamada@example.com'
+            'email' => 'taro.yamada@example.com',
         ]);
     }
 }

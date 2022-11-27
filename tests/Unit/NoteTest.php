@@ -65,5 +65,4 @@ class NoteTest extends TestCase
 
         $this->assertNull($notable);
     }
-
 }

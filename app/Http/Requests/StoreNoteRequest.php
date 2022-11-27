@@ -27,7 +27,7 @@ class StoreNoteRequest extends FormRequest
         return [
             'content' => 'required|string',
             'notable_id' => 'required|integer',
-            'notable_type' => 'required|string'
+            'notable_type' => 'required|string',
         ];
     }
 }

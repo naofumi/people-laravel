@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Note;
 use App\Models\Person;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class NoteSeeder extends Seeder
@@ -24,7 +23,7 @@ class NoteSeeder extends Seeder
             'noter_id' => $user->id,
             'noter_type' => get_class($user),
             'notable_id' => $person->id,
-            'notable_type' => get_class($person)
+            'notable_type' => get_class($person),
         ]);
     }
 }

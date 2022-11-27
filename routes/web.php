@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -25,7 +24,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [PersonController::class, 'index']);
 
-    # Application routes
+    // Application routes
     Route::resource('people', PersonController::class);
     Route::resource('users', UserController::class);
     Route::resource('notes', NoteController::class);

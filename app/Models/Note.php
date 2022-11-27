@@ -18,7 +18,7 @@ class Note extends Model
     ];
 
     protected static $allowedCommentableClasses = [
-        'App\Models\Person'
+        'App\Models\Person',
     ];
 
     public function noter()

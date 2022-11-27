@@ -18,10 +18,9 @@ class Person extends Model
 
     public function scopeSearch($query, $searchString)
     {
-        if ($searchString){
-
-            return $query->where('name', 'LIKE',"%{$searchString}%")
-                         ->orWhere('email', 'LIKE',"%{$searchString}%");
+        if ($searchString) {
+            return $query->where('name', 'LIKE', "%{$searchString}%")
+                         ->orWhere('email', 'LIKE', "%{$searchString}%");
         } else {
             return $query;
         }

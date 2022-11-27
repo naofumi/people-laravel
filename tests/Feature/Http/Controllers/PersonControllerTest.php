@@ -9,14 +9,13 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-
 class PersonControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
@@ -51,7 +50,7 @@ class PersonControllerTest extends TestCase
     {
         $response = $this->actingAs($this->user)
                          ->post(route('people.store'), ['name' => 'Taro Yamada',
-                                                       'email' => 'taro.yamada@example.com']);
+                             'email' => 'taro.yamada@example.com', ]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
@@ -66,8 +65,8 @@ class PersonControllerTest extends TestCase
         $file = UploadedFile::fake()->image('test_image.jpg');
         $response = $this->actingAs($this->user)
                          ->post(route('people.store'), ['name' => 'Taro Yamada',
-                                                       'email' => 'taro.yamada@example.com',
-                                                        'avatar' => $file]);
+                             'email' => 'taro.yamada@example.com',
+                             'avatar' => $file, ]);
 
         $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
         $person = Person::all()->last();
@@ -79,11 +78,11 @@ class PersonControllerTest extends TestCase
     {
         $response = $this->actingAs($this->user)
                          ->post(route('people.store'), ['name' => '',
-                                                       'email' => 'taro.yamada@example.com']);
+                             'email' => 'taro.yamada@example.com', ]);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors([
-            'name' => 'The name field is required.'
+            'name' => 'The name field is required.',
         ]);
     }
 
@@ -91,11 +90,11 @@ class PersonControllerTest extends TestCase
     {
         $response = $this->actingAs($this->user)
                          ->post(route('people.store'), ['name' => 'Taro Yamada',
-                                                       'email' => '']);
+                             'email' => '', ]);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors([
-            'email' => 'The email field is required.'
+            'email' => 'The email field is required.',
         ]);
     }
 
@@ -103,11 +102,11 @@ class PersonControllerTest extends TestCase
     {
         $response = $this->actingAs($this->user)
                          ->post(route('people.store'), ['name' => 'Taro Yamada',
-                                                       'email' => 'invalid_email_address']);
+                             'email' => 'invalid_email_address', ]);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors([
-            'email' => 'The email must be a valid email address.'
+            'email' => 'The email must be a valid email address.',
         ]);
     }
 
@@ -137,7 +136,7 @@ class PersonControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->patch(route('people.update', $person), ['name' => 'New Name',
-                                                       'email' => 'new.email@example.com']);
+                             'email' => 'new.email@example.com', ]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('people', ['name' => 'New Name']);
@@ -151,13 +150,13 @@ class PersonControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->patch(route('people.update', $person), ['name' => 'New Name',
-                                                       'email' => '']);
+                             'email' => '', ]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('people', ['name' => 'Taro Yamada']);
         $this->assertDatabaseMissing('people', ['name' => 'New Name']);
         $response->assertSessionHasErrors([
-            'email' => 'The email field is required.'
+            'email' => 'The email field is required.',
         ]);
     }
 
@@ -167,10 +166,10 @@ class PersonControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->patch(route('people.update', $person), ['name' => '',
-                                                       'email' => 'taro.yamada@example.com']);
+                             'email' => 'taro.yamada@example.com', ]);
 
         $response->assertSessionHasErrors([
-            'name' => 'The name field is required.'
+            'name' => 'The name field is required.',
         ]);
     }
 
@@ -184,5 +183,4 @@ class PersonControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('people.index'));
     }
-
 }

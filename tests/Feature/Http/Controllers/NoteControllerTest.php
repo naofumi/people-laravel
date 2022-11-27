@@ -8,13 +8,13 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class NoteControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     protected $user;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
@@ -32,9 +32,9 @@ class NoteControllerTest extends TestCase
         $person = Person::factory()->create();
         $response = $this->actingAs($this->user)
                          ->get(route('notes.create', [
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person)
-        ]));
+                             'notable_id' => $person->id,
+                             'notable_type' => get_class($person),
+                         ]));
 
         $response->assertStatus(200)
                  ->assertSee('Create Note');
@@ -46,10 +46,10 @@ class NoteControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->post(route('notes.store'), [
-            'content' => 'Note Content',
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person)
-        ]);
+                             'content' => 'Note Content',
+                             'notable_id' => $person->id,
+                             'notable_type' => get_class($person),
+                         ]);
 
         $this->assertDatabaseHas('notes', ['content' => 'Note Content']);
         $response->assertRedirect(route('people.show', $person))
@@ -62,15 +62,15 @@ class NoteControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->post(route('notes.store'), [
-            'content' => '',
-            'notable_id' => $person->id,
-            'notable_type' => get_class($person)
-        ]);
+                             'content' => '',
+                             'notable_id' => $person->id,
+                             'notable_type' => get_class($person),
+                         ]);
 
         $this->assertDatabaseMissing('notes', ['content' => '']);
         $response->assertStatus(302);
         $response->assertSessionHasErrors([
-            'content' => 'The content field is required.'
+            'content' => 'The content field is required.',
         ]);
     }
 
@@ -104,8 +104,8 @@ class NoteControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)
                          ->patch(route('notes.update', $note), [
-            'content' => 'Update Note content',
-        ]);
+                             'content' => 'Update Note content',
+                         ]);
 
         $this->assertDatabaseHas('notes', ['content' => 'Update Note content']);
         $response->assertRedirect(route('notes.show', $note->id))
@@ -118,7 +118,7 @@ class NoteControllerTest extends TestCase
                     ->for(User::factory(), 'noter')
                     ->for(Person::factory(), 'notable')
                     ->create([
-                        'content' => 'Some Note content'
+                        'content' => 'Some Note content',
                     ]);
 
         $response = $this->actingAs($this->user)
@@ -134,7 +134,7 @@ class NoteControllerTest extends TestCase
                     ->for(User::factory(), 'noter')
                     ->for(Person::factory(), 'notable')
                     ->create([
-                        'content' => 'Some Note content'
+                        'content' => 'Some Note content',
                     ]);
 
         $response = $this->actingAs($this->user)
@@ -143,5 +143,4 @@ class NoteControllerTest extends TestCase
         $response->assertRedirect(route('people.show', $note->notable))
             ->assertSessionHas('success', 'Note was successfully deleted.');
     }
-
 }
