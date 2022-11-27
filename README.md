@@ -19,6 +19,16 @@ Run vite
 npm run dev
 ```
 
+## Create database
+
+We are currently using MySQL.
+
+From within the mysql console.
+```
+create database people_seedtech_development;
+create database people_seedtech_test;
+```
+
 ## Seed data
 
 1. Seeding data
