@@ -9,6 +9,12 @@ This has been installed according to the README in this package.
 
 #### Development
 
+Run Laravel server
+```
+php artisan serve
+```
+
+Run vite
 ```
 npm run dev
 ```
