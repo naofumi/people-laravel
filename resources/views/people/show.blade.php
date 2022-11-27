@@ -86,6 +86,25 @@
     </table>
 </div>
 
+<div id="tags">
+    <table class="table">
+        <thead>
+            <th>Tag</th>
+            <th>date</th>
+            <th>Memo</th>
+        </thead>
+        <tbody>
+            @foreach($person->taggings()->orderByDesc('created_at')->get() as $tagging)
+                <tr>
+                    <td>{{ $tagging->tag->name }}</td>
+                    <td>{{ $tagging->created_at }}</td>
+                    <td>{{ $tagging->memo }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 @if ($person->avatar_path)
     <img src="{{ Storage::url($person->avatar_path) }}">
 @endif
