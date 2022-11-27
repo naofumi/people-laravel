@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateNoteRequest;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -45,8 +46,7 @@ class NoteController extends Controller
      */
     public function store(StoreNoteRequest $request)
     {
-        // Will replace with Authenticated user later
-        $user = User::first();
+        $user = Auth::user();
         $note = Note::create(array_merge(
             $request->validated(),
             ['noter_id' => $user->id, 'noter_type' => get_class($user)]

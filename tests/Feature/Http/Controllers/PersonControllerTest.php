@@ -3,24 +3,37 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 
 class PersonControllerTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
+    protected $user;
+
+    protected function setUp() : void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
+    public function test_index_requires_login()
+    {
+        $response = $this->get('/people');
+
+        $response->assertRedirect(route('login'));
+    }
+
     public function test_index()
     {
         $person = Person::factory()->create(['name' => 'Taro yamada', 'email' => 'taro.yamada@example.com']);
-        $response = $this->get('/people');
+        $response = $this->actingAs($this->user)
+                         ->get('/people');
 
         $response->assertStatus(200);
         $response->assertSee('Taro yamada');
@@ -28,14 +41,16 @@ class PersonControllerTest extends TestCase
 
     public function test_create()
     {
-        $response = $this->get(route('people.create'));
+        $response = $this->actingAs($this->user)
+                         ->get(route('people.create'));
 
         $response->assertStatus(200);
     }
 
     public function test_store_with_valid_paramters()
     {
-        $response = $this->post(route('people.store'), ['name' => 'Taro Yamada',
+        $response = $this->actingAs($this->user)
+                         ->post(route('people.store'), ['name' => 'Taro Yamada',
                                                        'email' => 'taro.yamada@example.com']);
 
         $response->assertStatus(302);
@@ -49,7 +64,8 @@ class PersonControllerTest extends TestCase
     {
         Storage::fake('public');
         $file = UploadedFile::fake()->image('test_image.jpg');
-        $response = $this->post(route('people.store'), ['name' => 'Taro Yamada',
+        $response = $this->actingAs($this->user)
+                         ->post(route('people.store'), ['name' => 'Taro Yamada',
                                                        'email' => 'taro.yamada@example.com',
                                                         'avatar' => $file]);
 
@@ -61,7 +77,8 @@ class PersonControllerTest extends TestCase
 
     public function test_store_with_invalid_name()
     {
-        $response = $this->post(route('people.store'), ['name' => '',
+        $response = $this->actingAs($this->user)
+                         ->post(route('people.store'), ['name' => '',
                                                        'email' => 'taro.yamada@example.com']);
 
         $response->assertStatus(302);
@@ -72,7 +89,8 @@ class PersonControllerTest extends TestCase
 
     public function test_store_with_blank_email()
     {
-        $response = $this->post(route('people.store'), ['name' => 'Taro Yamada',
+        $response = $this->actingAs($this->user)
+                         ->post(route('people.store'), ['name' => 'Taro Yamada',
                                                        'email' => '']);
 
         $response->assertStatus(302);
@@ -83,7 +101,8 @@ class PersonControllerTest extends TestCase
 
     public function test_store_with_invalid_email()
     {
-        $response = $this->post(route('people.store'), ['name' => 'Taro Yamada',
+        $response = $this->actingAs($this->user)
+                         ->post(route('people.store'), ['name' => 'Taro Yamada',
                                                        'email' => 'invalid_email_address']);
 
         $response->assertStatus(302);
@@ -95,7 +114,8 @@ class PersonControllerTest extends TestCase
     public function test_show()
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
-        $response = $this->get(route('people.show', $person));
+        $response = $this->actingAs($this->user)
+                         ->get(route('people.show', $person));
 
         $response->assertStatus(200);
         $response->assertSee('Taro Yamada');
@@ -104,7 +124,8 @@ class PersonControllerTest extends TestCase
     public function test_edit()
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
-        $response = $this->get(route('people.edit', $person));
+        $response = $this->actingAs($this->user)
+                         ->get(route('people.edit', $person));
 
         $response->assertStatus(200);
         $response->assertSee('Taro Yamada');
@@ -114,7 +135,8 @@ class PersonControllerTest extends TestCase
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
 
-        $response = $this->patch(route('people.update', $person), ['name' => 'New Name',
+        $response = $this->actingAs($this->user)
+                         ->patch(route('people.update', $person), ['name' => 'New Name',
                                                        'email' => 'new.email@example.com']);
 
         $response->assertStatus(302);
@@ -127,7 +149,8 @@ class PersonControllerTest extends TestCase
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
 
-        $response = $this->patch(route('people.update', $person), ['name' => 'New Name',
+        $response = $this->actingAs($this->user)
+                         ->patch(route('people.update', $person), ['name' => 'New Name',
                                                        'email' => '']);
 
         $response->assertStatus(302);
@@ -142,7 +165,8 @@ class PersonControllerTest extends TestCase
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
 
-        $response = $this->patch(route('people.update', $person), ['name' => '',
+        $response = $this->actingAs($this->user)
+                         ->patch(route('people.update', $person), ['name' => '',
                                                        'email' => 'taro.yamada@example.com']);
 
         $response->assertSessionHasErrors([
@@ -154,7 +178,8 @@ class PersonControllerTest extends TestCase
     {
         $person = Person::factory()->create(['name' => 'Taro Yamada', 'email' => 'taro.yamada@example.com']);
 
-        $response = $this->delete(route('people.destroy', $person));
+        $response = $this->actingAs($this->user)
+                         ->delete(route('people.destroy', $person));
         $this->assertModelMissing($person);
         $response->assertStatus(302);
         $response->assertRedirect(route('people.index'));

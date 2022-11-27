@@ -12,26 +12,40 @@ use Tests\TestCase;
 class NoteControllerTest extends TestCase
 {
     use RefreshDatabase;
+    protected $user;
+
+    protected function setUp() : void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
+    public function test_create_requires_login()
+    {
+        $response = $this->get(route('notes.create'));
+
+        $response->assertRedirect(route('login'));
+    }
 
     public function test_create()
     {
         $person = Person::factory()->create();
-        $response = $this->get(route('notes.create', [
+        $response = $this->actingAs($this->user)
+                         ->get(route('notes.create', [
             'notable_id' => $person->id,
             'notable_type' => get_class($person)
         ]));
 
-        $response->assertStatus(200);
-        $response->assertSee('Create Note');
+        $response->assertStatus(200)
+                 ->assertSee('Create Note');
     }
 
     public function test_store_with_valid_paramters()
     {
-        // TODO: Fix when Auth is implemented
-        $user = User::factory()->create();
         $person = Person::factory()->create();
 
-        $response = $this->post(route('notes.store'), [
+        $response = $this->actingAs($this->user)
+                         ->post(route('notes.store'), [
             'content' => 'Note Content',
             'notable_id' => $person->id,
             'notable_type' => get_class($person)
@@ -44,11 +58,10 @@ class NoteControllerTest extends TestCase
 
     public function test_store_with_invalid_paramters()
     {
-        // TODO: Fix when Auth is implemented
-        $user = User::factory()->create();
         $person = Person::factory()->create();
 
-        $response = $this->post(route('notes.store'), [
+        $response = $this->actingAs($this->user)
+                         ->post(route('notes.store'), [
             'content' => '',
             'notable_id' => $person->id,
             'notable_type' => get_class($person)
@@ -63,7 +76,6 @@ class NoteControllerTest extends TestCase
 
     public function test_edit()
     {
-        $noter = User::factory()->create();
         $person = Person::factory()->create();
         $note = Note::factory()
             ->for(User::factory(), 'noter')
@@ -72,7 +84,8 @@ class NoteControllerTest extends TestCase
                 'content' => 'Some Note content',
             ]);
 
-        $response = $this->get(route('notes.edit', $note));
+        $response = $this->actingAs($this->user)
+                         ->get(route('notes.edit', $note));
 
         $response->assertStatus(200);
         $response->assertSee('Some Note content');
@@ -89,7 +102,8 @@ class NoteControllerTest extends TestCase
                     'content' => 'Some Note content',
                 ]);
 
-        $response = $this->patch(route('notes.update', $note), [
+        $response = $this->actingAs($this->user)
+                         ->patch(route('notes.update', $note), [
             'content' => 'Update Note content',
         ]);
 
@@ -107,7 +121,8 @@ class NoteControllerTest extends TestCase
                         'content' => 'Some Note content'
                     ]);
 
-        $response = $this->get(route('notes.show', $note));
+        $response = $this->actingAs($this->user)
+                         ->get(route('notes.show', $note));
 
         $response->assertStatus(200);
         $response->assertSee('Some Note content');
@@ -122,7 +137,8 @@ class NoteControllerTest extends TestCase
                         'content' => 'Some Note content'
                     ]);
 
-        $response = $this->delete(route('notes.destroy', $note));
+        $response = $this->actingAs($this->user)
+                         ->delete(route('notes.destroy', $note));
         $this->assertModelMissing($note);
         $response->assertRedirect(route('people.show', $note->notable))
             ->assertSessionHas('success', 'Note was successfully deleted.');
