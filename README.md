@@ -45,3 +45,10 @@ create database people_seedtech_test;
 ./vendor/bin/phpstan analyse --memory-limit=2G
 ```
 
+## Linting
+
+Pint is installed by default in new Laravel apps.
+
+```
+./vendor/bin/pint
+```
