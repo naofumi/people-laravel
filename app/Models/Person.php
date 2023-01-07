@@ -1,9 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Person extends Model
 {
@@ -11,13 +15,13 @@ class Person extends Model
 
     protected $fillable = ['name', 'email', 'avatar_path'];
 
-    public function notes()
+    public function notes(): MorphMany
     {
         return $this->morphMany(related: Note::class,
             name: 'notable');
     }
 
-    public function scopeSearch($query, $searchString)
+    public function scopeSearch(Builder $query, ?string $searchString): Builder
     {
         if ($searchString) {
             return $query->where('name', 'LIKE', "%{$searchString}%")
@@ -27,7 +31,7 @@ class Person extends Model
         }
     }
 
-    public function taggings()
+    public function taggings(): MorphMany
     {
         return $this->morphMany(
             related: Tagging::class,
@@ -35,7 +39,7 @@ class Person extends Model
         );
     }
 
-    public function tags()
+    public function tags(): MorphToMany
     {
         return $this->morphToMany(
             related: Tag::class,

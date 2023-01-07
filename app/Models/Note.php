@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Note extends Model
 {
@@ -21,12 +23,12 @@ class Note extends Model
         'App\Models\Person',
     ];
 
-    public function noter()
+    public function noter(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function notable()
+    public function notable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -37,7 +39,7 @@ class Note extends Model
     //
     // If either the $notableType is not allowed, or the $commetableId does not
     // exist in the DB, `null` is returned.
-    public static function notableFindSafe($notableType, $notableId)
+    public static function notableFindSafe(string $notableType, int|string $notableId): ?Person
     {
         if (array_search($notableType, Note::$allowedCommentableClasses) === false) {
             return null;

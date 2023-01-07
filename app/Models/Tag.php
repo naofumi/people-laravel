@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
 {
     use HasFactory;
 
-    public function taggings()
+    public function taggings(): HasMany
     {
         return $this->hasMany(Tagging::class);
     }
@@ -28,7 +31,7 @@ class Tag extends Model
     // On the other hand, in a One To Many relationship where
     // A(one) <--> B(many) and A can be many different classes,
     // retrieving A from B can return any object.
-    public function people()
+    public function people(): MorphToMany
     {
         return $this->morphedByMany(related: Person::class,
             name: 'taggable',
