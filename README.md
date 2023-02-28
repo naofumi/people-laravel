@@ -27,8 +27,8 @@ We are currently using MySQL.
 
 From within the mysql console.
 ```
-create database people_seedtech_development;
-create database people_seedtech_test;
+create database people_development;
+create database people_test;
 ```
 
 ## Seed data
